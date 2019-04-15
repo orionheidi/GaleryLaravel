@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAuthorsTable extends Migration
+class CreatePhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateAuthorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('authors', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('photos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('url');
+            $table->unsignedInteger('gallery_id')->nullable();
+            $table->foreign('gallery_id')->references('id')->on('galleries')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateAuthorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('authors');
+        Schema::dropIfExists('photos');
     }
 }
