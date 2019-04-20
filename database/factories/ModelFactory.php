@@ -28,7 +28,7 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->define(App\Gallery::class, function(Faker $faker){       //uvek je drugi parametar callback i uvek vraca asocijativni niz gde je key naziv atributa
     return[
-        "name" => $faker->realText(255),
+        "name" => $faker->realText(20),
         "description" => $faker->paragraph,
     ];
  });

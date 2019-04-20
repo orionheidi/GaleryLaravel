@@ -13,12 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-
-Route::resource('galleries','GalleryController');
 
 Route::group([
 
@@ -26,12 +24,21 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
-
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    Route::post('register', 'RegisterController@register');
 
 });
 
-Route::post('register', 'RegisterController@register');
+
+// Route::group(['middleware' => ['guest']],function(){
+//     Route::post('login', 'AuthController@login');
+//     Route::post('register', 'RegisterController@register');
+// });
+
+Route::resource('users','UserController');
+Route::resource('galleries','GalleryController');
+Route::resource('photos','PhotoController');
+Route::get('my-galleries','GalleryController@myGalleries');

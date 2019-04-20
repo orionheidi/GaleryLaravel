@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Gallery extends Model
 {
     protected $fillable = [
-        'name', 'description'
+        'name', 'description','user_id'
     ];
 
     public function user(){
@@ -23,4 +23,5 @@ class Gallery extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
 }

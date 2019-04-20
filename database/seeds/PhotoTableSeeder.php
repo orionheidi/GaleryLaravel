@@ -11,7 +11,7 @@ class PhotoTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Photo::class,100)->create()->each(function($photo){
+        factory(App\Photo::class,500)->create()->each(function($photo){
             $gallery = App\Gallery::inRandomOrder()->first();
             $photo->gallery_id = $gallery->id;
             $photo->save();

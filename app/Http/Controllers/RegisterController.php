@@ -11,6 +11,11 @@ use App\User;
 
 class RegisterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['register']]);
+    }
+
     public function register(Request $request){
 
         $this->validate($request,[
