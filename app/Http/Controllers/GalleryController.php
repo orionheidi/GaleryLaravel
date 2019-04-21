@@ -8,7 +8,7 @@ use App\Gallery;
 use App\User;
 use App\Photo;
 use Illuminate\Support\Facades\Auth;
-use db;
+use DB;
 
 class GalleryController extends Controller
 {
@@ -18,21 +18,28 @@ class GalleryController extends Controller
     }
     public function index()
     {
-            $galleries = Gallery::with('photos','user')->orderBy('id', 'DESC')->take(10)->get();  
+    //  {      $galleries = Gallery::with(['comments', 'user'])->join('users', 'users.id','=','galleries.user_id')
+    //         ->select('galleries.*')
+    //         ->orderBy('id', 'DESC')
+    //         ->paginate(10);
+
+            // $galleries =DB::table('galleries')
+            // ->join('photos', 'galleries.id', '=', 'photos.id')
+            // ->join('users', 'users.id', '=', 'galleries.user_id')
+            // ->select('galleries.id','galleries.name','galleries.created_at','users.first_name', 'photos.url')
+            // ->orderBy('id', 'DESC')
+            // ->paginate(10);
+           
+        //  $galleries = DB::table('galleries')->with('photos','user')->orderBy('id', 'DESC')->paginate(10);
+            $galleries = Gallery::with('photos','user','comments.user')->orderBy('id', 'DESC')->take(10)->get();  
              return $galleries;
         
     }
 
     public function myGalleries(){
 
-        //   if(Auth::check()){
-            return Gallery::with('photos','user')->where('user_id',auth()->user()->id)->orderBy('id', 'DESC')->take(10)->get();
-        // }
-    }
+            return Gallery::with('photos','user','comments.user')->where('user_id',auth()->user()->id)->orderBy('id', 'DESC')->take(10)->get();  
 
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -64,7 +71,7 @@ class GalleryController extends Controller
 
     public function show($id)
     {
-        return Gallery::with('photos','user')->findOrFail($id);
+        return Gallery::with('photos','user','comments.user')->findOrFail($id);
     }
 
     public function edit($id)

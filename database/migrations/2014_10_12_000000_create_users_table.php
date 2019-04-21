@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('terms_and_conditions')->default(true);
             $table->timestamps();
+            
         });
     }
 
@@ -32,5 +33,6 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+        
     }
 }

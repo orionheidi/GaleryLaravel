@@ -28,17 +28,12 @@ Route::group([
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    Route::get('show/{id}', 'AuthController@show');
     Route::post('register', 'RegisterController@register');
 
 });
 
-
-// Route::group(['middleware' => ['guest']],function(){
-//     Route::post('login', 'AuthController@login');
-//     Route::post('register', 'RegisterController@register');
-// });
-
 Route::resource('users','UserController');
 Route::resource('galleries','GalleryController');
-Route::resource('photos','PhotoController');
+Route::resource('comments','CommentController');
 Route::get('my-galleries','GalleryController@myGalleries');
