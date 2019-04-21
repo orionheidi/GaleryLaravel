@@ -1,8 +1,10 @@
 <?php
 
 namespace App;
+use App\Photo;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Gallery extends Model
 {
@@ -24,5 +26,6 @@ class Gallery extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
 
 }

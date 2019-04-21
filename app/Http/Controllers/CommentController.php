@@ -15,7 +15,8 @@ class CommentController extends Controller
 
         $this->validate($request,
         [
-            'text' => 'required|max:1000'      
+            'text' => 'required|max:1000',
+            'user_id' => 'required'     
         ]);
 
         // $gallery = Gallery::findOrFail($request->gallery_id);

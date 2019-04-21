@@ -14,7 +14,7 @@ class GalleryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['only' => ['my-galeries','store']]);
+        $this->middleware('auth:api', ['only' => ['my-galeries','store','update']]);
     }
     public function index()
     {
@@ -32,7 +32,7 @@ class GalleryController extends Controller
            
         //  $galleries = DB::table('galleries')->with('photos','user')->orderBy('id', 'DESC')->paginate(10);
             $galleries = Gallery::with('photos','user','comments.user')->orderBy('id', 'DESC')->take(10)->get();  
-             return $galleries;
+            return $galleries;
         
     }
 
@@ -51,7 +51,6 @@ class GalleryController extends Controller
             'photos' => 'required|array|min:1',
             'photos.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/']
         ]);
-        // \Log::info(print_r($request->all(),true));
 
         $gallery = Gallery::create([
             'name' => $request->get('name'),
@@ -65,7 +64,6 @@ class GalleryController extends Controller
         }
         $gallery->photos()->saveMany($photos);
         return $gallery;
-        // Gallery::create($request->all());
     }
 
 
@@ -79,17 +77,36 @@ class GalleryController extends Controller
         //
     }
 
-    public function update(Request $request, Gallery $gallery)
-    {
+    public function update(Request $request, $id)
+    {  
         $this->validate($request,
         [
             'name' => 'required|min:2|max:255',
-            'description' => 'string|max:1000',      
+            'description' => 'string|max:1000', 
+            'photos' => 'required|array|min:1',
+            'photos.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/']
         ]);
         
+        $gallery = Gallery::find($id);
+        $photos = Photo::where('gallery_id', $request->id)->get();
+        $photosInDb = [];
+        foreach ($photos as $photo) {
+            $photosInDb[] = $photo->url;
+        }
+      
+        // $photosToDelete = array_diff($photosInDb, $request->photos);
+        // $photosToSkip = array_diff($photosInDb, $photosToDelete);
+        // $photosToCreate = array_diff($request->photos, $photosToDelete, $photosToSkip);
+        // if (!empty($photosToDelete)) {
+        //     photo::deleteMultiple($photosToDelete, $id);
+        // }
+        // if (!empty($photosToCreate)) {
+        // Photo::create($photosInDb, $id);
+        // }
         $gallery->update($request->all());
-        return $gallery;
     }
+
+ 
 
   
     public function destroy($id)
