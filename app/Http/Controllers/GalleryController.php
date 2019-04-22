@@ -16,24 +16,31 @@ class GalleryController extends Controller
     {
         $this->middleware('auth:api', ['only' => ['my-galeries','store','update']]);
     }
-    public function index()
-    {
-    //  {      $galleries = Gallery::with(['comments', 'user'])->join('users', 'users.id','=','galleries.user_id')
-    //         ->select('galleries.*')
-    //         ->orderBy('id', 'DESC')
-    //         ->paginate(10);
+    // public function index()
+    // {
+    // //  {      $galleries = Gallery::with(['comments', 'user'])->join('users', 'users.id','=','galleries.user_id')
+    // //         ->select('galleries.*')
+    // //         ->orderBy('id', 'DESC')
+    // //         ->paginate(10);
 
-            // $galleries =DB::table('galleries')
-            // ->join('photos', 'galleries.id', '=', 'photos.id')
-            // ->join('users', 'users.id', '=', 'galleries.user_id')
-            // ->select('galleries.id','galleries.name','galleries.created_at','users.first_name', 'photos.url')
-            // ->orderBy('id', 'DESC')
-            // ->paginate(10);
+    //         // $galleries =DB::table('galleries')
+    //         // ->join('photos', 'galleries.id', '=', 'photos.id')
+    //         // ->join('users', 'users.id', '=', 'galleries.user_id')
+    //         // ->select('galleries.id','galleries.name','galleries.created_at','users.first_name', 'photos.url')
+    //         // ->orderBy('id', 'DESC')
+    //         // ->paginate(10);
            
-        //  $galleries = DB::table('galleries')->with('photos','user')->orderBy('id', 'DESC')->paginate(10);
-            $galleries = Gallery::with('photos','user','comments.user')->orderBy('id', 'DESC')->take(10)->get();  
-            return $galleries;
+    //     //  $galleries = DB::table('galleries')->with('photos','user')->orderBy('id', 'DESC')->paginate(10);
+    //         $galleries = Gallery::with('photos','user','comments.user')->orderBy('id', 'DESC')->take(10)->get();  
+    //         return $galleries;
         
+    // }
+
+    public function index(Request $request)
+    {   
+        return Gallery::getGalleries($request)
+        ->orderBy('created_at', 'desc')
+        ->get();
     }
 
     public function myGalleries(){
